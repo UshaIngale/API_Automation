@@ -95,7 +95,6 @@ public class UserStepDef extends BaseClass {
     public void iVerifyToDeleteUserApiWithTheStatusCodeStatusCode(int expectedStatusCode,Map<String,String> table) {
         Assert.assertEquals(expectedStatusCode,response.statusCode());
     }
-
     @Given("I prepare request structure to update user")
     public void iPrepareRequestStructureToUpdateUser(Map<String,String> table) {
         if (table.get("email").equals("valid")) {
@@ -107,9 +106,17 @@ public class UserStepDef extends BaseClass {
         userDto.setGender(table.get("gender"));
         userDto.setEmail(email);
 
-        response=requestSpecification.get("https://gorest.co.in/public/v2/users/"+table.get("pathParam"));
+        requestSpecification.baseUri("https://gorest.co.in/")
+                .basePath("public/v2/")
+                .header("Accept", ContentType.JSON)
+                .header("Authorization", "Bearer "+"e4bc946a9bffb29f173f9d1eeba2188c538cf582840ecb939bdfd6b355bac63b")
+                .log().all();
+        System.out.println("Path Param : "+table.get("pathParam"));
+        response=requestSpecification.get("users/"+table.get("pathParam"));
+        response.prettyPrint();
         userResponseDto=new UserResponseDto();
         userResponseDto = response.body().as(UserResponseDto.class);
+
         userDto.setStatus(userResponseDto.getStatus());
 
         requestSpecification= RestAssured.given();
