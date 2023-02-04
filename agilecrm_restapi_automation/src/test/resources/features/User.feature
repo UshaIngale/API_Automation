@@ -63,12 +63,13 @@ Feature: Verify create user functionality of go rest
       | name   | <name>   |
       | gender | <gender> |
       | email  | <email>  |
+      | pathParam  | 251162 |
     When I hit an api for user
-      | endpoint   | users  |
+      | endpoint   | users/  |
       | httpMethod | PATCH  |
       | pathParam  | 251162 |
     Then I verify update user api with the status code <statusCode>
       | valid | <valid> |
     Examples:
       | name        | gender | email | status | valid | statusCode |
-      | Usha Ingale | female | valid | active | true  | 201        |
+      | Usha Ingale | female | valid | active | true  | 200        |
